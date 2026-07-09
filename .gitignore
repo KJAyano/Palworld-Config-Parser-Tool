@@ -1,0 +1,21 @@
+# Binaries and build output
+*.exe
+*.exe~
+dist/
+build/
+*.spec
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# Config files (generated at runtime)
+*.ini
+!DefaultPalWorldSettings.ini
+
+# Game data
+Pal/
