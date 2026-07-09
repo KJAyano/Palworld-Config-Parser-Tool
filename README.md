@@ -10,51 +10,89 @@
 </p>
 
 <p align="center">
-  A lightweight, zero-dependency tool that updates your Palworld dedicated server config (<code>PalWorldSettings.ini</code>) from environment variables.<br/>
-  Built for <strong>Pterodactyl</strong> and <strong>Pelican</strong> panels — but works standalone on any Linux or Windows host.
+  A lightweight, zero-dependency tool that updates your Palworld dedicated server config (<code>PalWorldSettings.ini</code>) directly from environment variables.<br/>
+  Built for <strong>Pterodactyl</strong>, <strong>Pelican</strong>, and <strong>Docker</strong> panels — but works perfectly standalone on any Linux or Windows host.
 </p>
+
+---
+
+## 📑 Table of Contents
+
+- [✨ Features](#-features)
+- [📥 Installation & Usage](#-installation--usage)
+  - [Standalone Example](#standalone-example)
+  - [Pterodactyl / Pelican Integration](#pterodactyl--pelican-integration)
+- [📋 Environment Variables](#-environment-variables)
+- [🛡️ Validation Rules](#️-validation-rules)
+- [📝 Notes & Edge Cases](#-notes--edge-cases)
+- [🔨 Building from Source](#-building-from-source)
 
 ---
 
 ## ✨ Features
 
-- 🔄 **108 config keys** — covers every setting in `DefaultPalWorldSettings.ini`
-- ✅ **Input validation** — 6 rule types prevent misconfiguration before it happens
-- 📁 **Auto-bootstrap** — copies `DefaultPalWorldSettings.ini` automatically if the config is missing or corrupt
-- 🐧 **Wine/Proton aware** — detects `WINEPREFIX` or Proton and uses the correct config path
-- 📦 **Zero dependencies** — pure Python standard library, no `pip install` required
-- 🚀 **Standalone binaries** — pre-built with PyInstaller for Linux & Windows (amd64/arm64)
+- 🔄 **100% Coverage** — Supports all **108 config keys** introduced up to the latest Palworld patches.
+- ✅ **Strict Input Validation** — 6 intelligent rule types (Numeric, Boolean, String, AlphaDash, etc.) prevent misconfigurations before they reach the server.
+- 📁 **Smart Auto-Bootstrap** — Intelligently detects empty or missing config files (< 1200 bytes) and copies a fresh `DefaultPalWorldSettings.ini` to guarantee successful boot.
+- 🐧 **Wine/Proton Aware** — Automatically detects `WINEPREFIX` or the presence of Proton and injects the config into the `WindowsServer` directory path if you're running the Windows binary on Linux.
+- 📦 **Zero Dependencies** — Pure Python standard library logic. No `pip install` required for the source.
+- 🚀 **Pre-built Binaries** — Ultra-fast, single-file executables pre-compiled with PyInstaller for Linux and Windows (`amd64`).
 
 ---
 
-## 📥 Installation
+## 📥 Installation & Usage
 
 ### Pre-built Binaries
 
-Download from the [Releases](https://github.com/KJAyano/Palworld-Config-Parser-Tool/releases) page — no Python needed.
+Download the standalone binary from the [Releases](https://github.com/KJAyano/Palworld-Config-Parser-Tool/releases) page — **no Python installation needed**.
 
 ```bash
 # Linux
+wget https://github.com/KJAyano/Palworld-Config-Parser-Tool/releases/latest/download/PalworldServerConfigParser-linux-amd64
 chmod +x PalworldServerConfigParser-linux-amd64
 ./PalworldServerConfigParser-linux-amd64
 
 # Windows
-PalworldServerConfigParser-windows-amd64.exe
+# Just download PalworldServerConfigParser-windows-amd64.exe and run it!
 ```
 
-### From Source
+### Standalone Example
+
+You can easily use this on a bare-metal Linux/Windows server or in a standard bash script. Just set the environment variables before running the binary!
 
 ```bash
-python main.py
+# 1. Export your desired variables
+export SERVER_NAME="My Awesome Palworld Server"
+export MAX_PLAYERS="32"
+export DIFFICULTY="Hard"
+export EXP_RATE="2.0"
+
+# 2. Run the parser
+./PalworldServerConfigParser-linux-amd64
+
+# Result: Your PalWorldSettings.ini is instantly updated with these exact values!
 ```
 
-> Requires Python 3.10+. No external packages needed.
+### Pterodactyl / Pelican Integration
+
+This tool was designed natively for Docker-based game server panels. 
+
+Just include the parser download and execution command in your egg's install/startup script:
+
+```bash
+echo "Downloading Palworld Config Parser..."
+curl -sL https://github.com/KJAyano/Palworld-Config-Parser-Tool/releases/latest/download/PalworldServerConfigParser-linux-amd64 -o PalworldServerConfigParser
+chmod +x PalworldServerConfigParser
+
+echo "Updating PalWorldSettings.ini from Egg variables..."
+./PalworldServerConfigParser
+```
 
 ---
 
 ## 📋 Environment Variables
 
-Set any of these environment variables before running the parser. **If a variable is not set, the parser leaves that config value unchanged.**
+Set any of these environment variables before running the parser. **If a variable is not set, the parser leaves that specific config value untouched.**
 
 ### 🎮 Gameplay
 
@@ -218,7 +256,7 @@ Set any of these environment variables before running the parser. **If a variabl
 
 ## 🛡️ Validation Rules
 
-All values are validated before being written to the config file. Invalid values are rejected with a console warning.
+All values are validated before being written to the config file. Invalid values are rejected and trigger a terminal warning, protecting your server from crashing.
 
 | Rule | Accepts | Example |
 |---|---|---|
@@ -229,28 +267,33 @@ All values are validated before being written to the config file. Invalid values
 | **AlphaDash** | Alphanumeric, dashes, underscores | `abc123`, `test-pass_1` |
 | **CrossplayPlatforms** | Comma-separated platform list | `Steam,Xbox,PS5,Mac` |
 
-> **CrossplayPlatforms:** Valid platforms are `Steam`, `Xbox`, `PS5`, `Mac`. Empty value disables crossplay. Parentheses are added automatically in the INI file.
+> **CrossplayPlatforms Note:** Valid platforms are `Steam`, `Xbox`, `PS5`, `Mac`. An empty value disables crossplay. Parentheses are automatically injected into the INI file by the parser (e.g., `CrossplayPlatforms=(Steam,Xbox)`).
 
 ---
 
-## 📝 Notes
+## 📝 Notes & Edge Cases
 
-- If a variable **is not set**, the parser leaves that config value untouched.
-- If `DefaultPalWorldSettings.ini` exists but `PalWorldSettings.ini` does not, the default is automatically copied to the correct directory.
-- If `PalWorldSettings.ini` exists but is empty or under 1200 bytes, it is replaced with the default.
-- If `WINEPREFIX` is set or Proton is installed, the Linux binary uses the `WindowsServer` config path.
-- On **Windows**, empty environment variables are treated as unset (known OS-level behavior). This works correctly on Linux.
+- **Smart Merging:** If a variable is completely missing from your environment, the parser leaves the pre-existing config value untouched. It does not blindly overwrite with empty data!
+- **Auto-Restoration:** If `PalWorldSettings.ini` is accidentally wiped, empty, or under `1200 bytes`, the tool will automatically overwrite it with `DefaultPalWorldSettings.ini` to save your server from throwing exceptions.
+- **Proton/Wine Fallback:** If `WINEPREFIX` is set or `proton` is detected on a Linux host, the binary maps the config target path to `WindowsServer` instead of `LinuxServer` automatically.
+- **Windows Subtlety:** On Windows, empty environment variables are treated as "unset" by the OS. The parser handles this correctly.
 
 ---
 
 ## 🔨 Building from Source
 
+You can build the single-file executables yourself using `pyinstaller`.
+
 ```bash
+git clone https://github.com/KJAyano/Palworld-Config-Parser-Tool.git
+cd Palworld-Config-Parser-Tool
 pip install pyinstaller
-pyinstaller --onefile --name PalworldServerConfigParser main.py
+
+# Build the executable from the src directory
+pyinstaller --onefile --name PalworldServerConfigParser src/main.py
 ```
 
-The standalone binary will be in `dist/`.
+Your standalone binary will be generated inside the `dist/` folder.
 
 ---
 
