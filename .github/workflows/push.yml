@@ -24,21 +24,9 @@ jobs:
       matrix:
         include:
           - os: ubuntu-22.04
-            goos: linux
-            goarch: amd64
             artifact_name: PalworldServerConfigParser-linux-amd64
-          - os: ubuntu-22.04-arm64
-            goos: linux
-            goarch: arm64
-            artifact_name: PalworldServerConfigParser-linux-arm64
           - os: windows-latest
-            goos: windows
-            goarch: amd64
             artifact_name: PalworldServerConfigParser-windows-amd64.exe
-          - os: windows-11-arm64
-            goos: windows
-            goarch: arm64
-            artifact_name: PalworldServerConfigParser-windows-arm64.exe
 
     steps:
       - name: Checkout code
@@ -53,7 +41,7 @@ jobs:
         run: pip install pyinstaller
 
       - name: Build binary
-        run: pyinstaller --onefile --name PalworldServerConfigParser main.py
+        run: pyinstaller --onefile --name PalworldServerConfigParser src/main.py
 
       - name: Verify build output (Linux)
         if: runner.os == 'Linux'
@@ -102,27 +90,15 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download dist artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v4
         with:
           name: "PalworldServerConfigParser-linux-amd64"
           path: "dist"
 
       - name: Download dist artifact
-        uses: actions/download-artifact@v6
-        with:
-          name: "PalworldServerConfigParser-linux-arm64"
-          path: "dist"
-
-      - name: Download dist artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v4
         with:
           name: "PalworldServerConfigParser-windows-amd64.exe"
-          path: "dist"
-
-      - name: Download dist artifact
-        uses: actions/download-artifact@v6
-        with:
-          name: "PalworldServerConfigParser-windows-arm64.exe"
           path: "dist"
 
       - name: Generate checksum.txt
