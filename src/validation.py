@@ -12,12 +12,9 @@ def validate_numeric(value):
 def validate_floating(value):
     try:
         float(value)
+        return True
     except ValueError:
         return False
-    decimal_point_index = value.find(".")
-    if decimal_point_index == -1:
-        return False
-    return decimal_point_index < len(value) - 1
 
 def validate_true_false(value):
     return value == "True" or value == "False"
