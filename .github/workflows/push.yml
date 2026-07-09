@@ -1,4 +1,4 @@
-name: Python build and release
+name: Palworld Config Parser Tool build and release
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -87,24 +87,19 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Download dist artifact
+      - name: Download dist artifacts
         uses: actions/download-artifact@v4
         with:
-          name: "PalworldServerConfigParser-linux"
-          path: "dist"
-
-      - name: Download dist artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: "PalworldServerConfigParser-windows.exe"
-          path: "dist"
+          pattern: PalworldServerConfigParser-*
+          path: dist
+          merge-multiple: true
 
       - name: Generate checksum.txt
         run: |
           cd dist
-          sha256sum * > checksum.txt
+          sha256sum PalworldServerConfigParser-* > checksum.txt
           cd ..
 
       - name: Upload release artifacts
@@ -114,5 +109,5 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: dist/*
           tag: ${{ github.ref_name || inputs.tag_name }}
-          overwrite: false
+          overwrite: true
           file_glob: true
