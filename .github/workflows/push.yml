@@ -92,13 +92,13 @@ jobs:
       - name: Download dist artifact
         uses: actions/download-artifact@v4
         with:
-          name: "PalworldServerConfigParser-linux-amd64"
+          name: "PalworldServerConfigParser-linux"
           path: "dist"
 
       - name: Download dist artifact
         uses: actions/download-artifact@v4
         with:
-          name: "PalworldServerConfigParser-windows-amd64.exe"
+          name: "PalworldServerConfigParser-windows.exe"
           path: "dist"
 
       - name: Generate checksum.txt
