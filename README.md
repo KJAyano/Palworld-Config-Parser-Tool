@@ -253,3 +253,7 @@ pyinstaller --onefile --name PalworldServerConfigParser main.py
 The standalone binary will be in `dist/`.
 
 ---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
