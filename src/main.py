@@ -5,7 +5,7 @@ from validation import ValidationRules
 from mappings import envVars, envVarsValidationRules, envVarsQuotes
 from utils import detect_os_folder, set_ini_value, copy_file, get_ip_address_key
 
-VERSION = "v0.7.3"
+VERSION = "v1.0.0"
 
 def main():
     print("Program Version:", VERSION)
