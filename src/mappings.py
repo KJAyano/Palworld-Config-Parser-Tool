@@ -106,6 +106,18 @@ envVars = {
     "bAllowEnhanceStat_Stamina": "ALLOW_ENHANCE_STAT_STAMINA",
     "bAllowEnhanceStat_Weight": "ALLOW_ENHANCE_STAT_WEIGHT",
     "bAllowEnhanceStat_WorkSpeed": "ALLOW_ENHANCE_STAT_WORK_SPEED",
+    "PhysicsActiveDropItemMaxNum": "PHYSICS_ACTIVE_DROP_ITEM_MAX_NUM",
+    "PublicIP": "PUBLIC_IP",
+    "PlayerDataPalStorageUpdateCheckTickInterval": "PLAYER_DATA_PAL_STORAGE_UPDATE_CHECK_TICK_INTERVAL",
+    "MonsterFarmActionSpeedRate": "MONSTER_FARM_ACTION_SPEED_RATE",
+    "AutoTransferMasterCheckIntervalSeconds": "AUTO_TRANSFER_MASTER_CHECK_INTERVAL_SECONDS",
+    "AutoTransferMasterThresholdDays": "AUTO_TRANSFER_MASTER_THRESHOLD_DAYS",
+    "MaxGuildsPerFrame": "MAX_GUILDS_PER_FRAME",
+    "bEnableVoiceChat": "ENABLE_VOICE_CHAT",
+    "VoiceChatMaxVolumeDistance": "VOICE_CHAT_MAX_VOLUME_DISTANCE",
+    "VoiceChatZeroVolumeDistance": "VOICE_CHAT_ZERO_VOLUME_DISTANCE",
+    "bEnableBuildingPlayerUIdDisplay": "ENABLE_BUILDING_PLAYER_UID_DISPLAY",
+    "BuildingNameDisplayCacheTTLSeconds": "BUILDING_NAME_DISPLAY_CACHE_TTL_SECONDS",
 }
 
 envVarsValidationRules = {
@@ -217,6 +229,18 @@ envVarsValidationRules = {
     "bAllowEnhanceStat_Stamina": "TrueFalse",
     "bAllowEnhanceStat_Weight": "TrueFalse",
     "bAllowEnhanceStat_WorkSpeed": "TrueFalse",
+    "PhysicsActiveDropItemMaxNum": "NumericSigned",
+    "PublicIP": "String",
+    "PlayerDataPalStorageUpdateCheckTickInterval": "Floating",
+    "MonsterFarmActionSpeedRate": "Floating",
+    "AutoTransferMasterCheckIntervalSeconds": "Floating",
+    "AutoTransferMasterThresholdDays": "Numeric",
+    "MaxGuildsPerFrame": "Numeric",
+    "bEnableVoiceChat": "TrueFalse",
+    "VoiceChatMaxVolumeDistance": "Floating",
+    "VoiceChatZeroVolumeDistance": "Floating",
+    "bEnableBuildingPlayerUIdDisplay": "TrueFalse",
+    "BuildingNameDisplayCacheTTLSeconds": "Numeric",
 }
 
 envVarsQuotes = {

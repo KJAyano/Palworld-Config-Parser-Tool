@@ -9,6 +9,13 @@ def validate_numeric(value):
     except ValueError:
         return False
 
+def validate_numeric_signed(value):
+    try:
+        int(value)
+        return True
+    except ValueError:
+        return False
+
 def validate_floating(value):
     try:
         float(value)
@@ -38,6 +45,7 @@ def validate_crossplay_platforms(value):
 
 ValidationRules = {
     "Numeric": validate_numeric,
+    "NumericSigned": validate_numeric_signed,
     "Floating": validate_floating,
     "TrueFalse": validate_true_false,
     "String": validate_string,
